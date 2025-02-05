@@ -4,15 +4,21 @@ import cv2
 import numpy as np
 import math
 
-Serial_Port=serial.Serial(port='COM15', baudrate=115200, parity= 'N')
+Serial_Port=serial.Serial(port='COM12', baudrate=115200, parity= 'N')
 while(1):
     data=Serial_Port.readline() # 1byte受信なら data=Serial_Port.read(1)
     data=data.strip()
     data=data.decode('utf-8')
     data_list = data.split(",")
     int_data_list = []
+    flag = 0
     for i in range(len(data_list)):
-        int_data_list.append(float(data_list[i]))
+        try:
+            int_data_list.append(float(data_list[i]))
+        except:
+            flag = 1
+    if (flag == 1):
+        continue
     print(int_data_list)
 
     img = np.full((500, 500, 3), 128, dtype=np.uint8)
